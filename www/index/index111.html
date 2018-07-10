@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script src="./js/jquery-1.12.4.js"></script>
+
+    <script src="./js/demo.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            position: relative;
+        }
+        /* 合成图片 正常 */
+        @keyframes normal1 {
+            90% {
+                transform: translate( 0, 0);
+                border-radius: 50%;
+                opacity: .8;
+                box-shadow: 0 0 0px goldenrod;
+            }
+            95% {
+                transform: translate( 0, 0);
+                border-radius: 25%;
+                opacity: .9;
+                box-shadow: 0 0 10px aliceblue;
+            }
+
+            100% {
+                transform: translate( 0, 0);
+                border-radius: 0;
+                opacity: 1;
+                box-shadow: 0 0 0px aliceblue;
+            }
+        }
+        /* 波浪特效 正常 */
+        @keyframes wave1{
+            0%{
+                transform-origin:top; 
+                opacity: .5; 
+            }
+            25%{
+                transform-origin: top;
+                transform: rotateX(45deg) translateZ(5px);
+                opacity: .75; 
+            }
+            50%{
+                transform-origin: center;
+                transform: rotateX(0deg) translateZ(10px);
+                margin:5px;
+                opacity: 1;
+            }
+            75%{
+                transform-origin: bottom;
+                transform: rotateX(45deg) translateZ(5px);
+                opacity: .75; 
+            }
+            99%{
+                transform-origin:top; 
+                transform: none; 
+                opacity: .5;
+            }
+            100%{
+                opacity: 1;
+            }
+        }
+        .animata-normal {
+            animation: normal1 5s 1 ease-in ;
+        }
+        .animata-wave{
+            animation: wave1 5s 5 ease-in-out ;
+        }
+        .pic {
+            animation-fill-mode: forwards;
+            border-radius: 50%;
+            opacity: 0;
+            position: absolute;
+            transform-style: preserve-3d;
+        }
+        #box{
+            top:50px;
+            left: 50%;
+            transform: translateX(-50%);
+            perspective:500px;
+        }
+        .btn{
+            position: relative;
+            top :0;
+            left: 0;
+            display: flex;
+            justify-content: space-around;     
+        }
+        .btn button{
+            width: 100px;
+            height: 25px;
+            font-size: 18px;        
+        }
+    </style>
+</head>
+
+<body>
+    <div class="btn">
+        <button data-option="group" class="normal">normal</button>
+        <button data-option="group" class="updown">updown</button>
+        <button data-option="texiao" class="wave">wave</button>
+        <button data-option="texiao" class="oblique">oblique</button>
+    </div>
+    <div id="box"></div>
+</body>
+
+</html>
+
+<script>
+    $(function () {
+        var box = $("#box")
+        var granule = new Granule(box)
+        var option = {
+            //表示粒子宽高为num px
+            size: 5,
+            /**
+            * 图片效果 
+            * normal 正常 默认normal
+            * updown 上下 合并
+            * wave  波浪
+            * oblique  斜角波浪
+            */
+            // 组合    
+            group:{
+            // 路径 normal 正常 默认normal
+                kind:"",
+            },
+            // 特效
+            texiao:{
+            // 路径 wave 正常 oblique
+                kind:""
+            },
+            src: "./img/20.png",
+            width: 400,
+            height: 250
+        }
+        $(".btn button").click(function(){
+            box.html("")
+            var option1 =    $(this).data("option")
+            if(option1=="group"){
+                option.group.kind = $(this).attr("class")
+            }else{
+                option.texiao.kind = $(this).attr("class")               
+            }
+            console.log(option)
+            granule.rendan(option)
+        })
+    })
+</script>
